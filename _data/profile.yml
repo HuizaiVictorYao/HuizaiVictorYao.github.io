@@ -1,61 +1,79 @@
-primary_name: "Your Name"
+primary_name: "Huizai Yao"
 secondary_name: ""
-navbar_name: "Your Name"
+navbar_name: "Huizai Yao"
 
 positions:
-- name: Title or Position
-- name: Affiliation Name
-  logo: /assets/images/badges/MIT_Social_circle.png  # Logo is optional
+- logo: /assets/images/badges/hkustgz.png  # Logo is optional
+  name: Ph.D. Student at HKUST(GZ)
+# - name: Position 2 without logo
 
 
-email: "your@email.com"
+email: "huizai.yao@connect.hkust-gz.edu.cn"
 # cv_link: link-to-your-cv-file
-gscholar: xFmQpf4AAAAJ  # This is an example, replace it with your own Google Scholar ID
-github: your_github_id
-twitter: your_twitter_id  # Do not include the '@' symbol
+gscholar: KF2XbN0AAAAJ  # This is an example, replace it with your own Google Scholar ID
+github: HuizaiVictorYao
+# twitter: your_twitter_id  # Do not include the '@' symbol
 # wechat_qrcode: /assets/images/etc/wechat.jpg
 # wechat_prompt: >-
 #   Please tell me your <strong>name</strong> and <strong>affiliation</strong> (current or past) when adding my wechat. Thanks!
 # linkedin: your-linked-in-id
-# orcid: 0000-0000-0000-0000
+orcid: 0009-0007-5245-349X
 
 short_bio_text_justify: false
 short_bio: >-
   <p>
-    A <a href="https://en.wikipedia.org/wiki/Bicolor_cat" target="_blank">bicolor cat</a> is a cat with white fur combined with fur of some other colour, for example solid black, tabby, or colourpointed.
+  Welcome to my homepage! 
   </p>
   <p>
-    There are various patterns of a bicolour cat. These range from the Van-patterned (colour on the crown of the head 
-    and the tail only) to a solid colour with a throat locket or medallion. Bicolour coats are found in many cat breeds, 
-    as well as being common in domestic longhair and domestic shorthair cats.
+  I'm Huizai YAO, currently a Ph.D. student supervised by Prof. 
+  <a href="https://scholar.google.com/citations?user=cVDF1tkAAAAJ&hl=en" target="_blank">Hui Xiong</a> 
+  at the AI Thrust, Information Hub, HKUST(GZ). 
+  I received my B.Eng. in Computer Science from Nankai University. 
+  During my undergraduate studies, I worked as a research intern at BNRist, Tsinghua University, supervised by 
+  Dr. <a href="https://sites.google.com/view/schzhao" target="_blank">Sicheng Zhao</a>, 
+  and also as a trainee researcher at Shanghai AI Lab.
+  </p>
+  <p>
+  I’m broadly interested in building vision and language systems that can understand, adapt, and generalize to real-world dynamics.
+  </p>
+  <p>
+  I play 
+  <span style="color:#ff6f61;">🎸lead guitar</span> and/or 
+  <span style="color:#0077b6;">🎸bass</span> with the 1A2B campus band at HKUST(GZ).
   </p>
 
+
 portrait_url: /assets/images/photos/portrait.jpg
-portrait_caption: >-
-  Photo by Manja Vitolic on Unsplash (this caption is optional, comment it out to disable).
+# portrait_caption: >-
+#   1
 
 education:
-- name: Massachusetts Institute of Technology
-  logo: /assets/images/badges/MIT_Social_circle.png
+- name: The Hong Kong University of Science and Technology (Guangzhou)
+  logo: /assets/images/badges/hkustgz.png
   position: >- 
-    Department of Electrical Engineering and Computer Science <br/>
+    AI Thrust, Information Hub <br/>
     Ph.D. Student
-  date: Sep. 2024 - present
-- name: Peking University
-  logo: /assets/images/badges/PKU_red.png
-  position: B.S. in Computer Science
-  date: Sep. 2019 - Jul. 2021
+  date: Feb. 2025 - present
+- name: Nankai University
+  logo: /assets/images/badges/nku.jpg
+  position: B.Eng. in Computer Science
+  date: Sep. 2020 - Jul. 2024
 
-# experience:
-# - name: Peking University
-#   logo: /assets/images/badges/PKU_red.png
-#   position: Research Intern
-#   date: Sep. 2019 - Jul. 2021
-
-awards:
-- name: Award Name 2
-  date: 2024
-- name: Award Name 1 
-  date: 2021
-- name: A quick brown fox jumps over the lazy dog and runs away award
-  date: 2021
+experience:
+- name: Tsinghua University
+  logo: /assets/images/badges/thu.jpg
+  position: Research Intern
+  date: Apr. 2023 - Oct. 2024
+- name: Shanghai Artificial Intelligence Laboratory
+  logo: /assets/images/badges/pjlab.png
+  position: Trainee Researcher
+  date: May. 2023 - Aug. 2024
+# awards:
+# - name: Award Name 2
+#   date: 2024
+# - name: Award Name 1 
+#   date: 2021
+# - name: A quick brown fox jumps over the lazy dog and runs away award
+#   date: 2021
+services:
+- name: Reviewer for IJCV, TIP, CVPR, IJCAI, AAAI
