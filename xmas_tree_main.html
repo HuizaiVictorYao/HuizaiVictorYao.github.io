@@ -195,7 +195,9 @@
 
     <!-- Webcam hidden structure -->
     <div id="webcam-wrapper">
-        <video id="webcam" autoplay playsinline style="display:none;"></video>
+        <video id="webcam" autoplay playsinline muted
+        style="position:absolute; left:-9999px; top:-9999px; width:1px; height:1px; opacity:0;">
+        </video>
         <canvas id="webcam-preview"></canvas>
     </div>
 
@@ -1066,6 +1068,15 @@
             }
         }
 
+        let isPredicting = false;
+
+        function startPredictLoopOnce() {
+            if (isPredicting) return;
+            isPredicting = true;
+            lastVideoTime = -1; // 让第一帧一定会进
+            predictWebcam();
+        }
+
         let cameraStarted = false;
 
         async function startCamera() {
@@ -1130,8 +1141,8 @@
 
                 await video.play();
 
-                // ✅ 保证只启动一次 detect loop
-                video.addEventListener("loadeddata", predictWebcam, { once: true });
+                // ✅ 直接启动，不依赖事件（移动端 loadeddata 可能错过）
+                startPredictLoopOnce();
 
                 gestureStatusEl.textContent = 'Gesture: Camera Active (Open / Fist / Pinch)';
             } catch (err) {
@@ -1158,7 +1169,12 @@
                     processGestures(result);
                 }
             }
-            requestAnimationFrame(predictWebcam);
+            // iOS/Android：优先用 requestVideoFrameCallback（更贴合视频帧）
+            if (video.requestVideoFrameCallback) {
+                video.requestVideoFrameCallback(() => predictWebcam());
+            } else {
+                requestAnimationFrame(predictWebcam);
+            }
         }
 
         function processGestures(result) {
