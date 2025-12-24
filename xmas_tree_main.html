@@ -1054,7 +1054,7 @@
                 if (btn) {
                     btn.style.pointerEvents = 'auto';
                     btn.addEventListener('click', async () => {
-                        await startIOSCamera();
+                        await startCamera();
                     }, { once: true });
                 }
 
@@ -1066,30 +1066,63 @@
             }
         }
 
-        // ✅ 新增：iOS / iPadOS 需要用户手势触发摄像头 + 显式 play
-        async function startIOSCamera() {
+        let cameraStarted = false;
+
+        async function startCamera() {
+            if (cameraStarted) return;
+            cameraStarted = true;
+
             try {
                 if (!navigator.mediaDevices?.getUserMedia) {
                     gestureStatusEl.textContent = 'Gesture: No Camera API (View Only)';
                     return;
                 }
 
-                // iOS 更稳的约束：给 facingMode + 合理分辨率范围
-                const constraints = {
-                    audio: false,
-                    video: {
-                        facingMode: { ideal: 'user' }, // 前置；想后置改成 'environment'
-                        width: { ideal: 640 },
-                        height: { ideal: 480 }
+                // 统一设置：iOS/Android 都更稳
+                video.setAttribute('playsinline', '');
+                video.setAttribute('muted', '');
+                video.muted = true;
+                video.playsInline = true;
+                video.autoplay = true;
+
+                // ✅ 优先前置；失败再后置；再失败就放宽约束
+                const tryConstraints = [
+                    {
+                        audio: false,
+                        video: {
+                            facingMode: { ideal: 'user' },
+                            width: { ideal: 640 },
+                            height: { ideal: 480 }
+                        }
+                    },
+                    {
+                        audio: false,
+                        video: {
+                            facingMode: { ideal: 'environment' },
+                            width: { ideal: 640 },
+                            height: { ideal: 480 }
+                        }
+                    },
+                    { audio: false, video: true }
+                ];
+
+                let stream = null;
+                let lastErr = null;
+
+                for (const c of tryConstraints) {
+                    try {
+                        stream = await navigator.mediaDevices.getUserMedia(c);
+                        if (stream) break;
+                    } catch (e) {
+                        lastErr = e;
                     }
-                };
+                }
 
-                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                if (!stream) throw lastErr || new Error('getUserMedia failed');
 
-                // 绑定 stream
                 video.srcObject = stream;
 
-                // iOS Safari 常见坑：必须显式 play 且等 metadata
+                // iOS/部分Android：等 metadata 后再 play 更稳
                 await new Promise((resolve) => {
                     if (video.readyState >= 2) return resolve();
                     video.onloadedmetadata = () => resolve();
@@ -1097,14 +1130,22 @@
 
                 await video.play();
 
-                // 只注册一次，保持你原来逻辑
+                // ✅ 保证只启动一次 detect loop
                 video.addEventListener("loadeddata", predictWebcam, { once: true });
 
                 gestureStatusEl.textContent = 'Gesture: Camera Active (Open / Fist / Pinch)';
             } catch (err) {
                 console.error('Camera Start Error:', err);
-                // iOS 常见是 NotAllowedError（权限没给）或 NotFoundError（无摄像头）
-                gestureStatusEl.textContent = 'Gesture: Camera blocked (Check Permission)';
+                cameraStarted = false; // 失败允许用户再点一次
+
+                // 更通用的错误提示（iOS/Android 都可能出现）
+                if (err && (err.name === 'NotAllowedError' || err.name === 'SecurityError')) {
+                    gestureStatusEl.textContent = 'Gesture: Camera blocked (Permission/HTTPS)';
+                } else if (err && err.name === 'NotFoundError') {
+                    gestureStatusEl.textContent = 'Gesture: No camera found';
+                } else {
+                    gestureStatusEl.textContent = 'Gesture: Camera error (Check Console)';
+                }
             }
         }
 
